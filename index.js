@@ -31,7 +31,19 @@ const displayVideo = (video)=>{
       src=${video.thumbnail}
       alt="Shoes" />
   </figure>
-  <div class="px-0 py-2">
+  <div class="px-0 py-2 flex gap-2">
+    <div>
+     <img class="size-10 rounded-full object-cover" src=${video.authors[0].profile_picture}/>
+    </div>
+
+    <div>
+    <h2 class="font-bold">${video.title}</h2>
+    <div class="flex items-center gap-2">
+    <p class="text-gray-400">${video.authors[0].profile_name}</p>
+    <img  class="size-4"src="https://img.icons8.com/?size=96&id=D9RtvkuOe31p&format=png"/>
+    </div>
+    <p></p>
+    </div>
    
     </div>
   </div>
