@@ -1,4 +1,12 @@
 // 1 Fetch, load and categories on thml
+function getTimeString(time) {
+    const hour = parseInt(time / 3600);
+    let remainingSecond = time % 3600;
+    const minute = parseInt(remainingSecond / 60);
+    remainingSecond = remainingSecond % 60;
+    return `${hour}hour ${minute}minute ${remainingSecond}second ago`
+}
+
 
 // create loadCategories
 const loadCategories = ()=>{
@@ -16,12 +24,19 @@ const loadVideos = ()=>{
     
 }
 
+const loadCategoryVideos= (id)=>{
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+    .then(res => res.json())
+    .then(data =>displayVideo(data.category))
+    .catch(error => console.log(error))
+
+}
+
 const displayVideo = (video)=>{
     const videoContainer = document.querySelector('#videos')
-    console.log(video);
+    videoContainer.innerHTML = ""
     // create card here
     video.forEach(video => {
-        console.log(video);
         const card = document.createElement('div');
         card.classList = "card card-compact"
         card.innerHTML = `
@@ -30,7 +45,7 @@ const displayVideo = (video)=>{
     <img class="h-full w-full object-cover"
       src=${video.thumbnail}
       alt="Shoes" />
-      ${video.others.posted_date ? `<span class="absolute right-2 bottom-2 text-white text-xs bg-black rounded p-1">${video.others.posted_date}</span>`:""}
+      ${video.others.posted_date ? `<span class="absolute right-2 bottom-2 text-white text-xs bg-black rounded p-1">${getTimeString(video.others.posted_date)}</span>`:""}
       
   </figure>
   <div class="px-0 py-2 flex gap-2">
@@ -64,10 +79,14 @@ const displayCategories = (categories)=>{
     const categoryContainer = document.querySelector('#categories');
     categories.forEach((item)=> {
         // create a button
-        const button = document.createElement('button')
-        button.classList = "btn";
-        button.innerText = item.category;
-        categoryContainer.append(button)
+        const buttonContainer = document.createElement('div')
+       buttonContainer.innerHTML = `
+       <button onclick="loadCategoryVideos(${item.category_id})" class = "btn">
+       ${item.category}
+       </button>
+       
+       `
+        categoryContainer.append(buttonContainer)
         
     })
  
